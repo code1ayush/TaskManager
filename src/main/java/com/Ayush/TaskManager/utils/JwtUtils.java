@@ -55,7 +55,7 @@ public class JwtUtils {
                 .header().empty().add("typ", "JWT")
                 .and()
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis()+ 1000 * 60 * 60 * 10)) // Token valid for 10 hours
+                .expiration(new Date(System.currentTimeMillis()+ 1000 * 60 * 60)) // Token valid for 10 hours
                 .signWith(getSigningKey())
                 .compact();
     }

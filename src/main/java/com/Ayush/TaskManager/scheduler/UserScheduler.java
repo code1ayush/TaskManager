@@ -1,5 +1,6 @@
 package com.Ayush.TaskManager.scheduler;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import com.Ayush.TaskManager.Entity.User;
 import com.Ayush.TaskManager.Repositories.UserRepoImp;
 import com.Ayush.TaskManager.Services.EmailService;
@@ -40,7 +41,11 @@ public class UserScheduler {
             Sentiment sentiment = Sentiment.builder().email(user.getEmail()).sentiment(taskEntriesofUser).subject("This is an auomated email").build();
             if(sentiment!= null){
                 String json = objectMapper.writeValueAsString(sentiment);
-                kafkaTemplate.send("Foods",sentiment.getEmail(), json);
+                try{
+                    kafkaTemplate.send("Foods",sentiment.getEmail(), json);
+                }catch(Exception e){
+                    emailService.sendEmail(sentiment);
+                }
             }
         }
     }
