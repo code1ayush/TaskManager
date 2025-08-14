@@ -2,6 +2,8 @@ package com.Ayush.TaskManager.controller;
 
 import com.Ayush.TaskManager.Entity.User;
 import com.Ayush.TaskManager.Services.UserService;
+import com.Ayush.TaskManager.Services.WeatherService;
+import com.Ayush.TaskManager.api.response.WeatherResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private WeatherService weatherService;
 
 
     @PutMapping
@@ -31,5 +36,18 @@ public class UserController {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         userService.deleteByUserName(userName);
     }
+
+    @GetMapping
+    public ResponseEntity<?> greeting(){
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        String greeting = "";
+        WeatherResponse response = weatherService.getWeather("Mumbai");
+        if(response!=null){
+            greeting = ", feels like " + response.getCurrent().getFeelsLike();
+        }
+        return new ResponseEntity<>("Hi "+ userName + " temperature here in Mumbai " + greeting,HttpStatus.OK);
+    }
+
+
 
 }

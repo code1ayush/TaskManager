@@ -26,6 +26,10 @@ public class User {
     @NonNull
     private String password;
 
+    private String email;
+
+    private String sentiment;
+
     @DBRef
     private List<TaskEntry> taskEntries = new ArrayList<>();
 

@@ -3,6 +3,7 @@ package com.Ayush.TaskManager.controller;
 
 import com.Ayush.TaskManager.Entity.User;
 import com.Ayush.TaskManager.Services.UserService;
+import com.Ayush.TaskManager.cache.AppCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -18,6 +19,9 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AppCache appCache;
 
     @GetMapping("/all-users")
     public ResponseEntity<?> getAllUsers(){
@@ -36,6 +40,11 @@ public class AdminController {
         }catch(Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("clear-app-cache")
+    public void clearCache(){
+        appCache.init();
     }
 }
 

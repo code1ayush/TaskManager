@@ -6,12 +6,14 @@ import com.Ayush.TaskManager.Repositories.TaskManagerRepo;
 import com.Ayush.TaskManager.Repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Service
 public class TaskManagerService {
 
     @Autowired
@@ -28,7 +30,12 @@ public class TaskManagerService {
         try{
             User user = userService.findByUserName(userName);
             TaskEntry saved = taskManagerRepo.save(taskEntry);
+            if(user.getTaskEntries()!=null){
                 user.getTaskEntries().removeIf(t -> t.getId().equals(saved.getId()));
+            }
+            if(user.getTaskEntries() == null){
+                user.setTaskEntries(new ArrayList<>());
+            }
                 user.getTaskEntries().add(saved);
                 userService.createUsers(user);
 
