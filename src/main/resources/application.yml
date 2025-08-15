@@ -1,0 +1,95 @@
+spring:
+  data:
+    mongodb:
+      uri: ${MONGO_URI}
+      database: ${MONGO_DATABASE}
+      auto-index-creation: true
+    redis:
+      url: ${REDIS_URI}
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${SENDER_MAIL}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls: # start transport layer security
+            enable: true
+  kafka:
+    bootstrap-servers: ${BOOTSTRAP_SERVERS}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: ${KAFKA_GROUP_ID}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: com.Ayush.TaskManager.model
+    properties:
+      security:
+        protocol: SASL_SSL   # simple authentication and security layer
+      sasl:
+        mechanism: PLAIN
+        jaas:     # Java Authentication and Authorization Service
+          config: ${KAFKA_API}
+      session:
+        timeout:
+          ms: 45000
+
+weather:
+  api:
+    key: ${WEATHER_API_KEY}
+
+jwt:
+  secret: ${JWT_SECRET}
+
+server:
+  port: ${PORT:8080}
+
+
+
+
+    #logging:
+#  level:
+#    com:
+#      Ayush:
+#        TaskManager: TRACE
+
+
+# To turn off the logging for a specific package or class
+#logging:
+#  level:
+#    com:
+#      Ayush:
+#        TaskManager:
+#          Services:
+#            UserService: OFF
+
+
+#logging:
+#  level:
+#    root: ERROR    --> This will stop all the logs even internal logs will only print ERROR and above
+
+
+# LEVEL--  TRACE-->DEBUG-->INFO-->WARN-->ERROR-->FATAL
+    # If the above logging level is set to TRACE then all the logs will be printed
+    # If the above logging level is set to DEBUG then all the logs will be printed except
+    # TRACE logs
+
+
+
+    # priorities:  commandLine-->application.properties-->application.yml
+    # For command line run in terminal
+    #  1. mvn clean --> to clear the target
+    #  2. mvn package --> to create the target and the jar file init
+    #  3. run the command and it will alo set properties-->
+  # java -jar ./TaskManager-0.0.1-SNAPSHOT.jar --server.port=9090  --spring.profiles.active=dev
+
+  # if our system has tests then mvn clean package -D spring.profiles.active=dev
+  # -D flag is use to set java system properties from the command line
